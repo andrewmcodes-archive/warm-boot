@@ -1,8 +1,6 @@
 # Warm::Boot
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/warm/boot`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Create a new rails app with some configurable presets.
 
 ## Installation
 
@@ -37,3 +35,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## Code of Conduct
 
 Everyone interacting in the Warm::Boot project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/warm-boot/blob/master/CODE_OF_CONDUCT.md).
+
+## Copyright
+
+Copyright (c) 2018 Andrew Mason. See [MIT License](LICENSE.txt) for further details.
