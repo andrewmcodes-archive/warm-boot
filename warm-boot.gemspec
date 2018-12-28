@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # TODO: Remove uneeded dependencies
+  # TODO: Remove unneeded dependencies
   spec.add_dependency "tty-box", "~> 0.3.0"
   spec.add_dependency "tty-color", "~> 0.4"
   spec.add_dependency "tty-command", "~> 0.8.0"
