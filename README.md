@@ -1,5 +1,7 @@
 # Warm::Boot
 
+[![Build Status](https://travis-ci.org/andrewmcodes/warm-boot.svg?branch=master)](https://travis-ci.org/andrewmcodes/warm-boot)
+
 Create a new rails app with some configurable presets.
 
 ## Installation
