@@ -15,7 +15,7 @@ module Warm
       desc "version", "warm-boot version"
       def version
         require_relative "version"
-        puts "v#{Warm::Boot::VERSION}"
+        p "v#{Warm::Boot::VERSION}"
       end
       map %w(--version -v) => :version
 
