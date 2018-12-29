@@ -2,6 +2,7 @@
 
 require "thor"
 require "tty"
+require "warm/boot"
 module Warm
   module Boot
     # Handle the application command line parsing
@@ -20,20 +21,25 @@ module Warm
       map %w(--version -v) => :version
 
       desc "new", "new rails app"
-      def new
+      def new # rubocop:disable Metrics/AbcSize
         require_relative "commands/rails_new"
-        opts = {}
+        require_relative "rails_opts"
         prompt = TTY::Prompt.new
+        rails_opts = RailsOpts.new(
+          app_name: prompt.ask("What is the name of the app?", default: "myapp"),
+          api_only: prompt.yes?("Is this an API only app?"),
+          database: prompt.select("Choose your database:", %w(mysql postgresql sqlite3)),
+          coffeescript: prompt.yes?("Do you want to install coffeescript?"),
+          webpacker: prompt.yes?("Do you want to install webpack"),
+          framework: "none",
+        )
 
-        opts[:app_name] = prompt.ask("What is the name of the app?", default: "myapp")
-        opts[:api_only] = prompt.yes?("Is this an API only app?")
-        opts[:database] = prompt.select("Choose your database:", %w(mysql postgresql sqlite3))
-        opts[:coffeescript] = prompt.yes?("Do you want to install coffeescript?")
-        opts[:webpacker] = prompt.yes?("Do you want to install webpacker?")
-        if opts[:webpacker]
-          opts[:framework] = prompt.select("Choose your front-end framework:", %w(react vue angular elm stimulus none))
+        if rails_opts.options.webpacker
+          rails_opts.options.framework = prompt.select(
+            "Choose your front-end framework:", %w(react vue angular elm stimulus none)
+          )
         end
-        Warm::Boot::Commands::RailsNew.new(opts).execute
+        Warm::Boot::Commands::RailsNew.new(rails_opts.options).execute
       end
       map %w(--new -n) => :new
     end

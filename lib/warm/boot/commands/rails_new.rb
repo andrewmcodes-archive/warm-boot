@@ -7,7 +7,7 @@ module Warm
         attr_accessor :cmd, :sh, :opts
         def initialize(opts)
           @opts = opts
-          @cmd = ["rails new #{opts[:app_name]} -q -f"]
+          @cmd = ["rails new #{opts.app_name} --quiet"]
           @sh = TTY::Command.new
         end
 
@@ -40,23 +40,23 @@ module Warm
         end
 
         def database
-          cmd << " --database=#{opts[:database]}"
+          cmd << " --database=#{opts.database}"
         end
 
         def api
-          cmd << " --api" if opts[:api_only]
+          cmd << " --api" if opts.api_only
         end
 
         def coffeescript
-          cmd << " --skip-coffee" unless opts[:coffeescript]
+          cmd << " --skip-coffee" unless opts.coffeescript
         end
 
         def webpacker
-          cmd << " --webpack#{framework}" if opts[:webpacker]
+          cmd << " --webpack#{framework}" if opts.webpacker
         end
 
         def framework
-          opts[:framework] == "none" ? "" : "=#{opts[:framework]}"
+          opts.framework == "none" ? "" : "=#{opts.framework}"
         end
       end
     end
