@@ -30,7 +30,7 @@ module Warm
         opts[:database] = prompt.select("Choose your database:", %w(mysql postgresql sqlite3))
         opts[:coffeescript] = prompt.yes?("Do you want to install coffeescript?")
         opts[:webpacker] = prompt.yes?("Do you want to install webpacker?")
-        if opts[:webpacker] # rubocop:disable Style/GuardClause
+        if opts[:webpacker]
           opts[:framework] = prompt.select("Choose your front-end framework:", %w(react vue angular elm stimulus none))
         end
         Warm::Boot::Commands::RailsNew.new(opts).execute if prompt.yes?("Ready to roll?")

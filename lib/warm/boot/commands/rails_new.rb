@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Warm
   module Boot
     module Commands
