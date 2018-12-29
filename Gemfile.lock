@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    warm-boot (0.1.0)
+    warm-boot (0.1.1)
       pastel (~> 0.7.2)
       thor (~> 0.20.0)
       tty-box (~> 0.3.0)
