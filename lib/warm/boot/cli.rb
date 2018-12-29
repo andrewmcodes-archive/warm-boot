@@ -33,7 +33,7 @@ module Warm
         if opts[:webpacker]
           opts[:framework] = prompt.select("Choose your front-end framework:", %w(react vue angular elm stimulus none))
         end
-        Warm::Boot::Commands::RailsNew.new(opts).execute if prompt.yes?("Ready to roll?")
+        Warm::Boot::Commands::RailsNew.new(opts).execute
       end
       map %w(--new -n) => :new
     end
