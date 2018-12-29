@@ -7,7 +7,7 @@ module Warm
         attr_accessor :cmd, :opts
         def initialize(opts)
           @opts = opts
-          @cmd = "rails new #{opts[:app_name]}"
+          @cmd = ["rails new #{opts[:app_name]}"]
         end
 
         def string_builder
@@ -18,7 +18,8 @@ module Warm
         end
 
         def execute
-          p string_builder
+          string_builder
+          p cmd.join
         end
 
         private
