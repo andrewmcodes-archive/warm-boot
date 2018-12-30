@@ -21,6 +21,7 @@ module Warm
       end
       map %w(--version -v) => :version
 
+      # TODO: Need to refactor this and extra rails new commands from gem additions
       desc "new", "new rails app"
       def new # rubocop:disable Metrics/AbcSize
         require_relative "commands/rails_new"
