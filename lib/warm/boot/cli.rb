@@ -3,6 +3,7 @@
 require "thor"
 require "tty"
 require "warm/boot"
+require "fileutils"
 module Warm
   module Boot
     # Handle the application command line parsing
@@ -33,13 +34,20 @@ module Warm
           webpacker: prompt.yes?("Do you want to install webpack"),
           framework: "none",
         )
-
+        # JS framework
         if rails_opts.options.webpacker
           rails_opts.options.framework = prompt.select(
             "Choose your front-end framework:", %w(react vue angular elm stimulus none)
           )
         end
+        # Generate new rails app
         Warm::Boot::Commands::RailsNew.new(rails_opts.options).execute
+        # Cd into new app dir to add gems
+        Dir.chdir rails_opts.options.app_name
+        # Add annotate gem - for POC
+        if prompt.yes?("Would you like to install the annotate gem?")
+          `bundle add annotate --group="development"`
+        end
       end
       map %w(--new -n) => :new
     end
