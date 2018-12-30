@@ -46,9 +46,7 @@ module Warm
         # Cd into new app dir to add gems
         Dir.chdir rails_opts.options.app_name
         # Add annotate gem - for POC
-        if prompt.yes?("Would you like to install the annotate gem?")
-          `bundle add annotate --group="development"`
-        end
+        `bundle add annotate --group="development"` if prompt.yes?("Would you like to install the annotate gem?")
       end
       map %w(--new -n) => :new
     end
