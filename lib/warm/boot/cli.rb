@@ -51,7 +51,19 @@ module Warm
         ########################################################
 
         # Add annotate gem
-        `bundle add annotate --group="development"` if prompt.yes?("Would you like to install the annotate gem?")
+        `bundle add annotate --group="development"` if prompt.yes?("Would you like to install annotate?")
+
+        # Add pundit gem
+        if prompt.yes?("Would you like to install pundit?")
+          `bundle add pundit`
+          application_controller_path = "app/controllers/application_controller.rb"
+          apc = File.readlines(application_controller_path)
+          FileUtils.rm(application_controller_path)
+          apc.insert(1, "  include Pundit\n")
+          apc.insert(2, "  protect_from_forgery\n")
+          File.write(application_controller_path, apc.join.to_s)
+          `rails g pundit:install`
+        end
 
         # Template Lang
         template_lang = prompt.select("Choose your database:", %w(erb haml slim))
