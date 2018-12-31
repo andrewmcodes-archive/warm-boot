@@ -23,7 +23,7 @@ module Warm
 
       # TODO: Need to refactor this and extra rails new commands from gem additions
       desc "new", "new rails app"
-      def new # rubocop:disable Metrics/AbcSize Metrics/MethodLength
+      def new # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         require_relative "commands/rails_new"
         require_relative "rails_opts"
         prompt = TTY::Prompt.new
