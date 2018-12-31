@@ -53,12 +53,12 @@ module Warm
           `bundle add haml-rails`
           `bundle exec rails generate haml:application_layout convert`
           `bundle exec rails generate haml:mailer convert`
+          FileUtils.rm Dir.glob("app/views/layouts/*.erb")
           FileUtils.rm_rf "app/views/convert"
-          FileUtils.rm Dir.glob("app/views/*.erb")
         elsif template_lang == "slim"
           `bundle add slim-rails`
           `bundle add html2slim --group="development"`
-          `erb2slim app/views/**/*.erb --delete`
+          `erb2slim -d app/views/*`
         end
       end
       map %w(--new -n) => :new
