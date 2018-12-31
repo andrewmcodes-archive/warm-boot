@@ -47,6 +47,19 @@ module Warm
         Dir.chdir rails_opts.options.app_name
         # Add annotate gem - for POC
         `bundle add annotate --group="development"` if prompt.yes?("Would you like to install the annotate gem?")
+        # Template Lang
+        template_lang = prompt.select("Choose your database:", %w(erb haml slim))
+        if template_lang == "haml"
+          `bundle add haml-rails`
+          `bundle exec rails generate haml:application_layout convert`
+          `bundle exec rails generate haml:mailer convert`
+          FileUtils.rm_rf "app/views/convert"
+          FileUtils.rm Dir.glob("app/views/*.erb")
+        elsif template_lang == "slim"
+          `bundle add slim-rails`
+          `bundle add html2slim --group="development"`
+          `erb2slim app/views/**/*.erb --delete`
+        end
       end
       map %w(--new -n) => :new
     end
