@@ -23,7 +23,7 @@ module Warm
 
       # TODO: Need to refactor this and extra rails new commands from gem additions
       desc "new", "new rails app"
-      def new # rubocop:disable Metrics/AbcSize
+      def new # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
         require_relative "commands/rails_new"
         require_relative "rails_opts"
         prompt = TTY::Prompt.new
@@ -45,8 +45,45 @@ module Warm
         Warm::Boot::Commands::RailsNew.new(rails_opts.options).execute
         # Cd into new app dir to add gems
         Dir.chdir rails_opts.options.app_name
-        # Add annotate gem - for POC
-        `bundle add annotate --group="development"` if prompt.yes?("Would you like to install the annotate gem?")
+
+        ########################################################
+        # Need to refactor                                     #
+        ########################################################
+
+        # Add annotate gem
+        `bundle add annotate --group="development"` if prompt.yes?("Would you like to install annotate?")
+
+        # Add pundit gem
+        if prompt.yes?("Would you like to install pundit?")
+          `bundle add pundit`
+          application_controller_path = "app/controllers/application_controller.rb"
+          apc = File.readlines(application_controller_path)
+          FileUtils.rm(application_controller_path)
+          apc.insert(1, "  include Pundit\n")
+          apc.insert(2, "  protect_from_forgery\n")
+          File.write(application_controller_path, apc.join.to_s)
+          `rails g pundit:install`
+        end
+
+        # Template Lang
+        template_lang = prompt.select("Choose your database:", %w(erb haml slim))
+        if template_lang == "haml"
+          spinner = TTY::Spinner.new("[:spinner] installing haml-rails gem and converting views ...", format: :dots_4)
+          spinner.auto_spin
+          `bundle add haml-rails`
+          `bundle exec rails generate haml:application_layout convert`
+          `bundle exec rails generate haml:mailer convert`
+          FileUtils.rm Dir.glob("app/views/layouts/*.erb")
+          FileUtils.rm_rf "app/views/convert"
+          spinner.stop("Done!")
+        elsif template_lang == "slim"
+          spinner = TTY::Spinner.new("[:spinner] installing slim-rails gem and converting views ...", format: :dots_4)
+          spinner.auto_spin
+          `bundle add slim-rails`
+          `bundle add html2slim --group="development"`
+          `erb2slim -d app/views/*`
+          spinner.stop("Done!")
+        end
       end
       map %w(--new -n) => :new
     end
